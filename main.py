@@ -22,15 +22,14 @@ feature_columns = ['Age', 'G', 'GS', 'MP', 'FG', 'FGA', 'FG%', '3P', '3PA', \
 #################################################
 #Pandas DataFrame allows you to select columns.
 #We use column selection to split the data into features and class.
-nba_feature = data[feature_columns]
-# print(nba_feature[0:3]) # Lists val of Age, G, GS.....
-# print(list(nba_class[0:3])) # PF, SG, C
+
+# C L E A N S    I N C O N C L U S I V E    V A L U E S
+data = data[data.G > 25]
 
 # D E F I N E S    H I G H    3  -  P O I N T E R S
 data['high_3p%'] = (data['3P%'] > .30) *1
-# data['high_3p%'].head() #inspect first five records of the dataset
 
-# y is the target variable
+# y - T A R G E T    V A R I A B L E
 y = data['Pos'].copy()
 y.head()
 # print(y)
@@ -46,7 +45,7 @@ X_train, X_test, y_train, y_test = train_test_split(x, y, test_size = .25, rando
 three_perc_classifier = DecisionTreeClassifier(max_leaf_nodes = 15, random_state = 0)
 three_perc_classifier.fit(X_train, y_train)
 
-# S C O R E S
+# S C O R E S  /  A C C U R A C Y
 print("\nAccuracy:")
 print("Training set score: {:.3f}".format(three_perc_classifier.score(X_train, y_train)))
 print("Test set score: {:.3f}".format(three_perc_classifier.score(X_test, y_test)))
@@ -59,10 +58,10 @@ print(confusion_matrix(y_test, y_predicted))
 
 # C R O S S - V A L I D A T I O N
 tree = DecisionTreeClassifier(max_depth = 4, random_state = 0)
-#scores = cross_val_score(tree, data, y, cv = 5)
-
-
-
+scores = cross_val_score(tree, x, y, cv = 10)
+print("\nCross-validation scores: {}".format(scores))
+print("\nAverage cross-validation score: {:.2f}".format(scores.mean()))
 
 # S O U R C E S
 # https://stackabuse.com/decision-trees-in-python-with-scikit-learn/
+# https://www.youtube.com/watch?v=zvFot5vs6aQ
