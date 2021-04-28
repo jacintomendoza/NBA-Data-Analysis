@@ -45,11 +45,14 @@ X_train, X_test, y_train, y_test = train_test_split(x, y, test_size = .25, rando
 three_perc_classifier = DecisionTreeClassifier(max_leaf_nodes = 15, random_state = 0)
 three_perc_classifier.fit(X_train, y_train)
 
+# P R E D I C T    R E S P O N S E    F O R    T E S T    D A T A S E T
+y_predicted = three_perc_classifier.predict(X_test)
+
 # S C O R E S  /  A C C U R A C Y
-print("\nAccuracy:")
+print("\nAccuracy:", accuracy_score(y_test, y_predicted))
 print("Training set score: {:.3f}".format(three_perc_classifier.score(X_train, y_train)))
 print("Test set score: {:.3f}".format(three_perc_classifier.score(X_test, y_test)))
-y_predicted = three_perc_classifier.predict(X_test)
+
 #print('Accuracy Score: ' + str(accuracy_score(y_test, y_predicted)) + ' %') # Already have
 
 # C O N F U S I O N    M A T R I X
